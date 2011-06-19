@@ -43,4 +43,12 @@ function cycle($iterable)
 		'string or array or object implementing Traversable'
 	);
 }
+
+function repeat($object, $times=null){
+	if ($times !== null && !is_int($times)){
+		throw new exceptions\ArgumentTypeException(__FUNCTION__, 2, 'int or null');
+	}
+
+	return new lib\RepeatIterator($object, $times);
+}
 ?>

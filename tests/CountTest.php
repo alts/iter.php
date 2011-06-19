@@ -41,6 +41,8 @@ class CountTest extends PHPUnit_Framework_TestCase
 				break;
 			}
 		}
+
+		$this->assertEquals($max_iterations, $iterations);
 	}
 
 	public function testCountStart()
@@ -58,6 +60,8 @@ class CountTest extends PHPUnit_Framework_TestCase
 				break;
 			}
 		}
+
+		$this->assertEquals($max_iterations, $iterations);
 	}
 
 	public function testCountStartAndStep()
@@ -75,6 +79,8 @@ class CountTest extends PHPUnit_Framework_TestCase
 				break;
 			}
 		}
+
+		$this->assertEquals($max_iterations, $iterations);
 	}
 }
 ?>

@@ -105,7 +105,7 @@ class RepeatIterator implements \Iterator
 
 	public function key()
 	{
-		return $this->_times;
+		return $this->_index;
 	}
 
 	public function next()
@@ -115,7 +115,7 @@ class RepeatIterator implements \Iterator
 
 	public function valid()
 	{
-		return $this->_times < 0 || $this->_index !== $this->_times;
+		return $this->_times === null || $this->_index < $this->_times;
 	}
 }
 ?>

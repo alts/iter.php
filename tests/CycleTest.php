@@ -15,6 +15,8 @@ class CycleTest extends PHPUnit_Framework_TestCase
 				break;
 			}
 		}
+
+		$this->assertEquals($max_iterations, $iterations);
 	}
 
 	public function testCycleArray()
@@ -30,6 +32,8 @@ class CycleTest extends PHPUnit_Framework_TestCase
 				break;
 			}
 		}
+
+		$this->assertEquals($max_iterations, $iterations);
 	}
 }
 ?>
