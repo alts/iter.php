@@ -2,6 +2,30 @@
 require_once dirname(dirname(__FILE__)). '/iter.php';
 class CountTest extends PHPUnit_Framework_TestCase
 {
+	/**
+	 * @expectedException iter\exceptions\ArgumentTypeException
+	 */
+	public function testCountBadStart()
+	{
+		iter\count('BAD', 1);
+	}
+
+	/**
+	 * @expectedException iter\exceptions\ArgumentTypeException
+	 */
+	public function testCountBadStep()
+	{
+		iter\count(1, 'BAD');
+	}
+
+	/**
+	 * @expectedException iter\exceptions\ArgumentTypeException
+	 */
+	public function testCountBadStartAndStep()
+	{
+		iter\count('BAD', 'BAD');
+	}
+
 	public function testCountDefaults()
 	{
 		$iterations = 0;
