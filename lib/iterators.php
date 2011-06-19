@@ -17,13 +17,13 @@ class CountIterator implements \Iterator
 
 	public function rewind()
 	{
-		$this->_value = $this->start;
+		$this->_value = $this->_start;
 		$this->_steps = 0;
 	}
 
 	public function current()
 	{
-		return $this->value;
+		return $this->_value;
 	}
 
 	public function key()
@@ -79,4 +79,43 @@ class CycleIterator extends \InfiniteIterator
 	}
 }
 
+
+class RepeatIterator implements \Iterator
+{
+	protected $_index;
+	protected $_object;
+	protected $_times;
+
+	public function __construct($object, $times)
+	{
+		$this->_object = $object;
+		$this->_times = $times;
+		$this->rewind();
+	}
+
+	public function rewind()
+	{
+		$this->_index = 0;
+	}
+
+	public function current()
+	{
+		return $this->_object;
+	}
+
+	public function key()
+	{
+		return $this->_times;
+	}
+
+	public function next()
+	{
+		$this->_index++;
+	}
+
+	public function valid()
+	{
+		return $this->_times < 0 || $this->_index !== $this->_times;
+	}
+}
 ?>
