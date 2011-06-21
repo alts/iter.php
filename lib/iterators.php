@@ -204,7 +204,7 @@ class ChainIterator implements \Iterator
 
 	public function valid()
 	{
-		return $this->_iterators[$this->_inner_index]->current();
+		return $this->_iterators[$this->_inner_index]->valid();
 	}
 }
 ?>
