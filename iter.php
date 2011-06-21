@@ -19,28 +19,21 @@ function count($start=0, $step=1)
 function cycle($iterable)
 {
 	if (is_string($iterable)){
-		$str_array = array();
-		for ($i = 0, $l = strlen($iterable); $i < $l; $i++){
-			$str_array[] = $iterable[$i];
-		}
-		$iterable = $str_array;
+		$iterable = new lib\StringIterator($iterable);
 	}
 
 	if (is_array($iterable)){
 		$iterable = new \ArrayIterator($iterable);
 	}
 
-	if (is_object($iterable)){
-		$reflection = new \ReflectionClass($iterable);
-	 	if ($reflection->implementsInterface('Traversable')){
-			return new lib\CycleIterator($iterable);
-		}
+	if (_is_iterator($iterable)){
+		return new lib\CycleIterator($iterable);
 	}
 
 	throw new exceptions\ArgumentTypeException(
 		__FUNCTION__,
 		1,
-		'string or array or object implementing Traversable'
+		'string or array or Iterator'
 	);
 }
 
@@ -50,5 +43,39 @@ function repeat($object, $times=null){
 	}
 
 	return new lib\RepeatIterator($object, $times);
+}
+
+function chain($iterable){
+	$iterables = array();
+
+	foreach (func_get_args() as $index => $arg){
+		if (is_string($arg)){
+			$arg = new lib\StringIterator($arg);
+		}
+
+		if (is_array($arg)){
+			$arg = new \ArrayIterator($arg);
+		}
+
+		if (!_is_iterator($arg)){
+			throw new exceptions\ArgumentTypeException(
+				__FUNCTION__,
+				$index,
+				'string or array or Iterator'
+			);
+		}
+
+		$iterables[] = $arg;
+	}
+
+	return new lib\ChainIterator($iterables);
+}
+
+function _is_iterator($iterable){
+	if (is_object($iterable)){
+		$reflection = new \ReflectionClass('Iterator');
+		return $reflection->isInstance($iterable);
+	}
+	return false;
 }
 ?>
