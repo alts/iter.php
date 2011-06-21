@@ -94,6 +94,7 @@ class CycleIterator extends \InfiniteIterator
 	public function rewind()
 	{
 		$this->_index = 0;
+		parent::rewind();
 	}
 
 	public function key()
@@ -105,14 +106,6 @@ class CycleIterator extends \InfiniteIterator
 	{
 		$this->_index++;
 		parent::next();
-	}
-
-	public function valid()
-	{
-		if (!parent::valid()){
-			parent::rewind();
-		}
-		return true;
 	}
 }
 
@@ -205,6 +198,85 @@ class ChainIterator implements \Iterator
 	public function valid()
 	{
 		return $this->_iterators[$this->_inner_index]->valid();
+	}
+}
+
+class CompressIterator implements \Iterator
+{
+	protected $_iterable;
+	protected $_selectors;
+	protected $_index;
+
+	public function __construct($iterable, $selectors)
+	{
+		$this->_iterable = $iterable;
+		$this->_selectors = $selectors;
+		$this->rewind();
+	}
+
+	public function rewind()
+	{
+		$this->_index = 0;
+		$this->_iterable->rewind();
+		$this->_selectors->rewind();
+	}
+
+	public function next()
+	{
+		$this->_index++;
+		while ($this->valid()){
+			$this->_iterable->next();
+			$this->_selectors->next();
+			if ($this->_selectors->valid() && $this->_selectors->current()){
+				break;
+			}
+		}
+	}
+
+	public function key()
+	{
+		return $this->_index;
+	}
+
+	public function current()
+	{
+		return $this->_iterable->current();
+	}
+
+	public function valid()
+	{
+		return $this->_iterable->valid() && $this->_selectors->valid();
+	}
+}
+
+class ZipIterator extends \MultipleIterator
+{
+	protected $_index;
+
+	public function __construct($iterators)
+	{
+		$this->_index = 0;
+		parent::__construct(\MultipleIterator::MIT_NEED_ALL);
+		foreach ($iterators as $iterator){
+			$this->attachIterator($iterator);
+		}
+	}
+
+	public function rewind()
+	{
+		$this->_index = 0;
+		parent::rewind();
+	}
+
+	public function next()
+	{
+		$this->_index++;
+		parent::next();
+	}
+
+	public function key()
+	{
+		return $this->_index;
 	}
 }
 ?>

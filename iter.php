@@ -23,7 +23,7 @@ function cycle($iterable)
 	}
 
 	if (is_array($iterable)){
-		$iterable = new \ArrayIterator($iterable);
+		$iterable = new \IteratorIterator($iterable);
 	}
 
 	if (_is_iterator($iterable)){
@@ -45,15 +45,13 @@ function repeat($object, $times=null){
 	return new lib\RepeatIterator($object, $times);
 }
 
-function chain($iterable){
+function chain($_){
 	$iterables = array();
 
 	foreach (func_get_args() as $index => $arg){
 		if (is_string($arg)){
 			$arg = new lib\StringIterator($arg);
-		}
-
-		if (is_array($arg)){
+		} else if (is_array($arg)){
 			$arg = new \ArrayIterator($arg);
 		}
 
@@ -69,6 +67,48 @@ function chain($iterable){
 	}
 
 	return new lib\ChainIterator($iterables);
+}
+
+function compress($data, array $selectors)
+{
+	if (is_string($data)){
+		$data = new lib\StringIterator($data);
+	} else if (is_array($data)) {
+		$data = new \ArrayIterator($data);
+	}
+
+	if (!_is_iterator($data)){
+		throw new exceptions\ArgumentTypeException(
+			__FUNCTION__,
+			1,
+			'string or array or Iterator'
+		);
+	}
+
+	return new lib\CompressIterator($data, new \ArrayIterator($selectors));
+}
+
+function izip($_)
+{
+	foreach (func_get_args() as $index => $arg){
+		if (is_string($arg)){
+			$arg = new lib\StringIterator($arg);
+		} else if (is_array($arg)){
+			$arg = new \ArrayIterator($arg);
+		}
+
+		if (!_is_iterator($arg)){
+			throw new exceptions\ArgumentTypeException(
+				__FUNCTION__,
+				$index,
+				'string or array or Iterator'
+			);
+		}
+
+		$iterables[] = $arg;
+	}
+
+	return new lib\ZipIterator($iterables);
 }
 
 function _is_iterator($iterable){
