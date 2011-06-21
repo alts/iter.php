@@ -39,5 +39,32 @@ class RepeatTest extends PHPUnit_Framework_TestCase
 
 		$this->assertEquals($max_iterations, $iterations);
 	}
+
+	public function testRepeatRewind()
+	{
+		$object = array('key' => 1234, 'key2' => null);
+		$iterations = 0;
+		$max_iterations = 7;
+
+		foreach (iter\repeat($object) as $key => $_){
+			$this->assertEquals($iterations++, $key);
+			if ($iterations === $max_iterations){
+				break;
+			}
+		}
+
+		$this->assertEquals($max_iterations, $iterations);
+
+		$iterations = 0;
+
+		foreach (iter\repeat($object) as $key => $_){
+			$this->assertEquals($iterations++, $key);
+			if ($iterations === $max_iterations){
+				break;
+			}
+		}
+
+		$this->assertEquals($max_iterations, $iterations);
+	}
 }
 ?>

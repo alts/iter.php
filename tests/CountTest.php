@@ -82,5 +82,38 @@ class CountTest extends PHPUnit_Framework_TestCase
 
 		$this->assertEquals($max_iterations, $iterations);
 	}
+
+	public function testCountRewind()
+	{
+		$iterations = 0;
+		$max_iterations = 2;
+		$start = 7;
+		$step = 1;
+
+		$iterator = iter\count($start);
+
+		foreach ($iterator as $key => $value){
+			$this->assertEquals($iterations, $key);
+			$this->assertEquals($start + $step * $iterations, $value);
+
+			if (++$iterations == $max_iterations){
+				break;
+			}
+		}
+
+		$this->assertEquals($max_iterations, $iterations);
+
+		$iterations = 0;
+		foreach ($iterator as $key => $value){
+			$this->assertEquals($iterations, $key);
+			$this->assertEquals($start + $step * $iterations, $value);
+
+			if (++$iterations == $max_iterations){
+				break;
+			}
+		}
+
+		$this->assertEquals($max_iterations, $iterations);
+	}
 }
 ?>

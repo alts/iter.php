@@ -15,8 +15,10 @@ class ChainTest extends PHPUnit_Framework_TestCase
 		$iterable = array(1, 2, 34);
 		$iterations = 0;
 
+		$iterator = iter\chain($iterable);
+
 		// test iteration
-		foreach (iter\chain($iterable) as $index => $value){
+		foreach ($iterator as $index => $value){
 			$this->assertEquals($iterations++, $index);
 			$this->assertEquals($iterable[$index], $value);
 		}
@@ -25,7 +27,7 @@ class ChainTest extends PHPUnit_Framework_TestCase
 
 		// test rewind
 		$iterations = 0;
-		foreach (iter\chain($iterable) as $index => $value){
+		foreach ($iterator as $index => $value){
 			$this->assertEquals($iterations++, $index);
 			$this->assertEquals($iterable[$index], $value);
 		}
@@ -41,8 +43,10 @@ class ChainTest extends PHPUnit_Framework_TestCase
 		$iterations = 0;
 		$values = array();
 
+		$iterator = iter\chain($iterable1, $iterable2);
+
 		// test iteration
-		foreach (iter\chain($iterable1, $iterable2) as $index => $value){
+		foreach ($iterator as $index => $value){
 			$this->assertEquals($iterations++, $index);
 			$values[] = $value;
 		}
@@ -52,7 +56,7 @@ class ChainTest extends PHPUnit_Framework_TestCase
 		// test rewind
 		$iterations = 0;
 		$values = array();
-		foreach (iter\chain($iterable1, $iterable2) as $index => $value){
+		foreach ($iterator as $index => $value){
 			$this->assertEquals($iterations++, $index);
 			$values[] = $value;
 		}
