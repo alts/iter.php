@@ -3,7 +3,7 @@ namespace iter;
 require_once 'lib/iterators.php';
 require_once 'lib/exceptions.php';
 
-const VERSION = 0.30;
+const VERSION = 0.35;
 
 function count($start=0, $step=1)
 {
@@ -109,6 +109,54 @@ function izip($_)
 	}
 
 	return new lib\ZipIterator($iterables);
+}
+
+function islice($iterable, $_)
+{
+	if (is_string($iterable)){
+		$iterable = new lib\StringIterator($iterable);
+	} else if (is_array($iterable)){
+		$iterable = new \ArrayIterator($iterable);
+	}
+
+	if (!_is_iterator($iterable)){
+		throw new exceptions\ArgumentTypeException(
+			__FUNCTION__,
+			1,
+			'string or array or Iterator'
+		);
+	}
+
+	$start = 0;
+	$stop = null;
+	$step = 1;
+	$args = array_slice(func_get_args(), 1);
+	$count_args = \count($args);
+	$start_index = 1;
+	$stop_index = 2;
+	$step_index = 3;
+
+	if ($count_args === 1){
+		$stop = $args[0];
+		$stop_index--;
+	} else if ($count_args === 2){
+		list($start, $stop) = $args;
+	} else {
+		list($start, $stop, $step) = array_slice($args, 0, 3);
+	}
+
+	$iterator = izip(
+		array($start, $stop, $step),
+		array($start_index, $stop_index, $step_index)
+	);
+
+	foreach ($iterator as $index => $values){
+		if ((!is_int($values[0]) || $values[0] < 0) && ($index !== 1 || $values[0] !== null)){
+			throw new exceptions\ArgumentTypeException(__FUNCTION__, $values[1], 'int');
+		}
+	}
+
+	return new lib\SliceIterator($iterable, $start, $stop, $step);
 }
 
 function _is_iterator($iterable){

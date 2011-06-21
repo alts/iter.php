@@ -279,4 +279,36 @@ class ZipIterator extends \MultipleIterator
 		return $this->_index;
 	}
 }
+
+class SliceIterator extends \LimitIterator
+{
+	protected $_step;
+	protected $_index;
+
+	public function __construct($iterator, $start, $stop, $step)
+	{
+		$this->_step = $step;
+		parent::__construct($iterator, $start, $stop === null ? -1 : $stop - $start);
+		$this->rewind();
+	}
+
+	public function rewind()
+	{
+		$this->_index = 0;
+		parent::rewind();
+	}
+
+	public function key()
+	{
+		return $this->_index;
+	}
+
+	public function next()
+	{
+		$this->_index++;
+		for ($i = 0; $i < $this->_step; $i++){
+			parent::next();
+		}
+	}
+}
 ?>
