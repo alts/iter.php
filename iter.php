@@ -3,7 +3,7 @@ namespace iter;
 require_once 'lib/iterators.php';
 require_once 'lib/exceptions.php';
 
-const VERSION = 0.40;
+const VERSION = 0.45;
 
 function count($start=0, $step=1)
 {
@@ -26,7 +26,7 @@ function cycle($iterable)
 		$iterable = new \IteratorIterator($iterable);
 	}
 
-	if (_is_iterator($iterable)){
+	if ($iterable instanceof \Iterator){
 		return new lib\CycleIterator($iterable);
 	}
 
@@ -55,7 +55,7 @@ function chain($_){
 			$arg = new \ArrayIterator($arg);
 		}
 
-		if (!_is_iterator($arg)){
+		if (!($arg instanceof \Iterator)){
 			throw new exceptions\ArgumentTypeException(
 				__FUNCTION__,
 				$index,
@@ -77,7 +77,7 @@ function compress($data, array $selectors)
 		$data = new \ArrayIterator($data);
 	}
 
-	if (!_is_iterator($data)){
+	if (!($data instanceof \Iterator)){
 		throw new exceptions\ArgumentTypeException(
 			__FUNCTION__,
 			1,
@@ -97,7 +97,7 @@ function izip($_)
 			$arg = new \ArrayIterator($arg);
 		}
 
-		if (!_is_iterator($arg)){
+		if (!($arg instanceof \Iterator)){
 			throw new exceptions\ArgumentTypeException(
 				__FUNCTION__,
 				$index,
@@ -119,7 +119,7 @@ function islice($iterable, $_)
 		$iterable = new \ArrayIterator($iterable);
 	}
 
-	if (!_is_iterator($iterable)){
+	if (!($iterable instanceof \Iterator)){
 		throw new exceptions\ArgumentTypeException(
 			__FUNCTION__,
 			1,
@@ -165,11 +165,38 @@ function imap(\Closure $function=null){
 	return new lib\MapIterator($function, $args_iterator);
 }
 
-function _is_iterator($iterable){
-	if (is_object($iterable)){
-		$reflection = new \ReflectionClass('Iterator');
-		return $reflection->isInstance($iterable);
+function ifilter($predicate, $iterable)
+{
+	return _ifilter($predicate, $iterable, true);
+}
+
+function ifilterfalse($predicate, $iterable)
+{
+	return _ifilter($predicate, $iterable, false);
+}
+
+function _ifilter($predicate, $iterable, $check)
+{
+	if ($predicate === null){
+		$predicate = function($x){ return $x;};
+	} else if (!($predicate instanceof \Closure)){
+		throw new exceptions\ArgumentTypeException(__FUNCTION__, 1, 'Closure or null');
 	}
-	return false;
+
+	if (is_string($iterable)){
+		$iterable = new lib\StringIterator($iterable);
+	} else if (is_array($iterable)){
+		$iterable = new \ArrayIterator($iterable);
+	}
+
+	if (!($iterable instanceof \Iterator)){
+		throw new exceptions\ArgumentTypeException(
+			__FUNCTION__,
+			2,
+			'string or array or Iterator'
+		);
+	}
+
+	return new lib\FilterIterator($predicate, $iterable, $check);
 }
 ?>

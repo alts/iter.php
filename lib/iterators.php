@@ -354,4 +354,42 @@ class MapIterator implements \Iterator
 			: $this->_args_iterator->current();
 	}
 }
+
+class FilterIterator extends \FilterIterator
+{
+	protected $_index;
+	protected $_predicate;
+	protected $_check;
+
+	public function __construct($predicate, $iterable, $check)
+	{
+		$this->_predicate = $predicate;
+		$this->_check = $check ? true : false;
+		parent::__construct($iterable);
+		$this->rewind();
+	}
+
+	public function rewind()
+	{
+		parent::rewind();
+		$this->_index = 0;
+	}
+
+	public function next()
+	{
+		$this->_index++;
+		parent::next();
+	}
+
+	public function key()
+	{
+		return $this->_index;
+	}
+
+	public function accept()
+	{
+		$fn = $this->_predicate;
+		return $fn(parent::current()) == $this->_check;
+	}
+}
 ?>
