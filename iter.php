@@ -26,15 +26,15 @@ function cycle($iterable)
 		$iterable = new \IteratorIterator($iterable);
 	}
 
-	if ($iterable instanceof \Iterator){
-		return new lib\CycleIterator($iterable);
+	if (!($iterable instanceof \Iterator)){
+		throw new exceptions\ArgumentTypeException(
+			__FUNCTION__,
+			1,
+			'string or array or Iterator'
+		);
 	}
 
-	throw new exceptions\ArgumentTypeException(
-		__FUNCTION__,
-		1,
-		'string or array or Iterator'
-	);
+	return new lib\CycleIterator($iterable);
 }
 
 function repeat($object, $times=null){
@@ -160,6 +160,7 @@ function starmap($function, $iterables){
 	}
 
 	$args_iterator = call_user_func_array('iter\izip', $iterables);
+
 	return new lib\MapIterator($function, $args_iterator);
 }
 
