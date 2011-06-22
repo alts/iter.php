@@ -69,23 +69,9 @@ function chain($_){
 	return new lib\ChainIterator($iterators);
 }
 
-function compress($data, array $selectors)
+function compress($data, $selectors)
 {
-	if (is_string($data)){
-		$data = new lib\StringIterator($data);
-	} else if (is_array($data)) {
-		$data = new \ArrayIterator($data);
-	}
-
-	if (!($data instanceof \Iterator)){
-		throw new exceptions\ArgumentTypeException(
-			__FUNCTION__,
-			1,
-			'string or array or Iterator'
-		);
-	}
-
-	return new lib\CompressIterator($data, new \ArrayIterator($selectors));
+	return new lib\CompressIterator(izip($data, $selectors));
 }
 
 function izip($_)

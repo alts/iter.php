@@ -201,34 +201,34 @@ class ChainIterator implements \Iterator
 	}
 }
 
-class CompressIterator implements \Iterator
+class CompressIterator extends \IteratorIterator
 {
-	protected $_iterable;
-	protected $_selectors;
 	protected $_index;
 
-	public function __construct($iterable, $selectors)
+	public function __construct($zip2_iterator)
 	{
-		$this->_iterable = $iterable;
-		$this->_selectors = $selectors;
+		parent::__construct($zip2_iterator);
 		$this->rewind();
 	}
 
 	public function rewind()
 	{
 		$this->_index = 0;
-		$this->_iterable->rewind();
-		$this->_selectors->rewind();
+		parent::rewind();
 	}
 
 	public function next()
 	{
 		$this->_index++;
-		while ($this->valid()){
-			$this->_iterable->next();
-			$this->_selectors->next();
-			if ($this->_selectors->valid() && $this->_selectors->current()){
+		while (true){
+			parent::next();
+			if (!$this->valid()){
 				break;
+			} else {
+				list($value, $selector) = parent::current();
+				if ($selector){
+					break;
+				}
 			}
 		}
 	}
@@ -240,12 +240,8 @@ class CompressIterator implements \Iterator
 
 	public function current()
 	{
-		return $this->_iterable->current();
-	}
-
-	public function valid()
-	{
-		return $this->_iterable->valid() && $this->_selectors->valid();
+		list($value, $selector) = parent::current();
+		return $value;
 	}
 }
 
