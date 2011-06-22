@@ -311,4 +311,47 @@ class SliceIterator extends \LimitIterator
 		}
 	}
 }
+
+class MapIterator implements \Iterator
+{
+	protected $_function;
+	protected $_args_iterator;
+	protected $_index;
+
+	public function __construct($function, $args_iterator)
+	{
+		$this->_function = $function;
+		$this->_args_iterator = $args_iterator;
+		$this->rewind();
+	}
+
+	public function rewind()
+	{
+		$this->_index = 0;
+		$this->_args_iterator->rewind();
+	}
+
+	public function next()
+	{
+		$this->_index++;
+		$this->_args_iterator->next();
+	}
+
+	public function valid()
+	{
+		return $this->_args_iterator->valid();
+	}
+
+	public function key()
+	{
+		return $this->_index;
+	}
+
+	public function current()
+	{
+		return $this->_function
+			? call_user_func_array($this->_function, $this->_args_iterator->current())
+			: $this->_args_iterator->current();
+	}
+}
 ?>

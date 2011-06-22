@@ -3,7 +3,7 @@ namespace iter;
 require_once 'lib/iterators.php';
 require_once 'lib/exceptions.php';
 
-const VERSION = 0.35;
+const VERSION = 0.40;
 
 function count($start=0, $step=1)
 {
@@ -157,6 +157,12 @@ function islice($iterable, $_)
 	}
 
 	return new lib\SliceIterator($iterable, $start, $stop, $step);
+}
+
+function imap(\Closure $function=null){
+	$iterables = array_slice(func_get_args(), 1);
+	$args_iterator = call_user_func_array('iter\izip', $iterables);
+	return new lib\MapIterator($function, $args_iterator);
 }
 
 function _is_iterator($iterable){

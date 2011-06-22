@@ -30,12 +30,10 @@ class CountTest extends PHPUnit_Framework_TestCase
 	{
 		$iterations = 0;
 		$max_iterations = 2;
-		$start = 0;
-		$step = 1;
 
 		foreach (iter\count() as $key => $value){
 			$this->assertEquals($iterations, $key);
-			$this->assertEquals($start + $step * $iterations, $value);
+			$this->assertEquals($key, $value);
 
 			if (++$iterations == $max_iterations){
 				break;
