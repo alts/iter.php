@@ -46,7 +46,7 @@ function repeat($object, $times=null){
 }
 
 function chain($_){
-	$iterables = array();
+	$iterators = array();
 
 	foreach (func_get_args() as $index => $arg){
 		if (is_string($arg)){
@@ -63,10 +63,10 @@ function chain($_){
 			);
 		}
 
-		$iterables[] = $arg;
+		$iterators[] = $arg;
 	}
 
-	return new lib\ChainIterator($iterables);
+	return new lib\ChainIterator($iterators);
 }
 
 function compress($data, array $selectors)
@@ -90,7 +90,7 @@ function compress($data, array $selectors)
 
 function izip($_)
 {
-	$iterables = array();
+	$iterators = array();
 	foreach (func_get_args() as $index => $arg){
 		if (is_string($arg)){
 			$arg = new lib\StringIterator($arg);
@@ -106,10 +106,10 @@ function izip($_)
 			);
 		}
 
-		$iterables[] = $arg;
+		$iterators[] = $arg;
 	}
 
-	return new lib\ZipIterator($iterables);
+	return new lib\ZipIterator($iterators);
 }
 
 function islice($iterable, $_)
