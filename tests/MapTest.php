@@ -81,5 +81,37 @@ class MapTest extends PHPUnit_Framework_TestCase
 
 		$this->assertEquals(3, $iterations);
 	}
+
+	public function testStarmap()
+	{
+		$iterable1 = array(1, 2, 3);
+		$iterable2 = array(4, 5, 6);
+		$func = function ($x, $y){
+			return $x * $y;
+		};
+
+		$iterations = 0;
+
+		$iterator = iter\izip(
+			iter\imap($func, $iterable1, $iterable2),
+			iter\starmap($func, array($iterable1, $iterable2))
+		);
+
+		foreach ($iterator as $index => $values){
+			$this->assertEquals($iterations++, $index);
+			list($map_val, $starmap_val) = $values;
+			$this->assertEquals($map_val, $starmap_val);
+		}
+
+		$this->assertEquals(3, $iterations);
+	}
+
+	/**
+	 * @expectedException iter\exceptions\ArgumentTypeException
+	 */
+	public function testStarmapBadFunc()
+	{
+		iter\starmap(true, array(1,2,3));
+	}
 }
 ?>

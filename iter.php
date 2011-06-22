@@ -3,7 +3,7 @@ namespace iter;
 require_once 'lib/iterators.php';
 require_once 'lib/exceptions.php';
 
-const VERSION = 0.50;
+const VERSION = 0.55;
 
 function count($start=0, $step=1)
 {
@@ -90,6 +90,7 @@ function compress($data, array $selectors)
 
 function izip($_)
 {
+	$iterables = array();
 	foreach (func_get_args() as $index => $arg){
 		if (is_string($arg)){
 			$arg = new lib\StringIterator($arg);
@@ -161,6 +162,17 @@ function islice($iterable, $_)
 
 function imap(\Closure $function=null){
 	$iterables = array_slice(func_get_args(), 1);
+	$args_iterator = call_user_func_array('iter\izip', $iterables);
+	return new lib\MapIterator($function, $args_iterator);
+}
+
+function starmap($function, $iterables){
+	if ($function === null){
+		$function = function($x){ return $x;};
+	} else if (!($function instanceof \Closure)){
+		throw new exceptions\ArgumentTypeException(__FUNCTION__, 1, 'Closure or null');
+	}
+
 	$args_iterator = call_user_func_array('iter\izip', $iterables);
 	return new lib\MapIterator($function, $args_iterator);
 }
