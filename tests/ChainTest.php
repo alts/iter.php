@@ -63,5 +63,24 @@ class ChainTest extends PHPUnit_Framework_TestCase
 
 		$this->assertEquals(array(1, 2, 34, 'y', 'e', 's'), $values);
 	}
+
+	public function testChainWithEmpty()
+	{
+		$iterable1 = array();
+		$iterable2 = 'yes';
+
+		$iterations = 0;
+		$values = array();
+
+		$iterator = iter\chain($iterable1, $iterable2);
+
+		// test iteration
+		foreach ($iterator as $index => $value){
+			$this->assertEquals($iterations++, $index);
+			$values[] = $value;
+		}
+
+		$this->assertEquals(array('y', 'e', 's'), $values);
+	}
 }
 ?>

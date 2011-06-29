@@ -182,21 +182,20 @@ class ChainIterator implements \Iterator
 
 	public function next()
 	{
-		$iterator_count = count($this->_iterators);
 		$this->_index++;
 		$this->_iterators[$this->_inner_index]->next();
-
-		while ($this->_inner_index < $iterator_count - 1){
-			if ($this->valid()){
-				break;
-			}
-
-			$this->_inner_index++;
-		}
 	}
 
 	public function valid()
 	{
+		$iterator_count = count($this->_iterators);
+		while ($this->_inner_index < $iterator_count - 1){
+			if ($this->_iterators[$this->_inner_index]->valid()){
+				return true;
+			}
+
+			$this->_inner_index++;
+		}
 		return $this->_iterators[$this->_inner_index]->valid();
 	}
 }
