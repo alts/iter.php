@@ -3,7 +3,7 @@ namespace iter;
 require_once 'lib/iterators.php';
 require_once 'lib/exceptions.php';
 
-const VERSION = 0.55;
+const VERSION = 0.60;
 
 function count($start=0, $step=1)
 {
@@ -45,7 +45,7 @@ function repeat($object, $times=null){
 	return new lib\RepeatIterator($object, $times);
 }
 
-function chain($_){
+function chain(){
 	$iterators = array();
 
 	foreach (func_get_args() as $index => $arg){
@@ -74,7 +74,7 @@ function compress($data, $selectors)
 	return new lib\CompressIterator(izip($data, $selectors));
 }
 
-function izip($_)
+function izip()
 {
 	$iterators = array();
 	foreach (func_get_args() as $index => $arg){
@@ -191,6 +191,25 @@ function dropWhile(\Closure $predicate, $iterable)
 	}
 
 	return new lib\DropWhileIterator($predicate, $iterable);
+}
+
+function takeWhile(\Closure $predicate, $iterable)
+{
+	if (is_string($iterable)){
+		$iterable = new lib\StringIterator($iterable);
+	} else if (is_array($iterable)){
+		$iterable = new \ArrayIterator($iterable);
+	}
+
+	if (!($iterable instanceof \Iterator)){
+		throw new exceptions\ArgumentTypeException(
+			__FUNCTION__,
+			2,
+			'string or array or Iterator'
+		);
+	}
+
+	return new lib\takeWhileIterator($predicate, $iterable);
 }
 
 function _ifilter($predicate, $iterable, $check)
