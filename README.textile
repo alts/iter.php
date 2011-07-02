@@ -19,7 +19,7 @@ h2. Feature Checklist
 * -repeat-
 * -chain-
 * -compress-
-* dropwhile
+* -dropwhile-
 * groupby
 * -ifilter-
 * -ifilterfalse-
