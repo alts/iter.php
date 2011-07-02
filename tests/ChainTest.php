@@ -10,6 +10,13 @@ class ChainTest extends PHPUnit_Framework_TestCase
 		iter\chain(true);
 	}
 
+	public function testChainZero()
+	{
+		foreach (iter\chain() as $value){
+			$this->fail('Iterator should be empty');
+		}
+	}
+
 	public function testChainOne()
 	{
 		$iterable = array(1, 2, 34);

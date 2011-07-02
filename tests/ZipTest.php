@@ -10,6 +10,13 @@ class ZipTest extends PHPUnit_Framework_TestCase
 		iter\izip(array(1, 2, 3), 7);
 	}
 
+	public function testEmptyZip()
+	{
+		foreach (iter\izip() as $value){
+			$this->fail('Iterator should be empty');
+		}
+	}
+
 	public function testUnevenZip()
 	{
 		$iterable1 = array(1, 2, 3);

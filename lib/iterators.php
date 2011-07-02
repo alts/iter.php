@@ -154,6 +154,7 @@ class ChainIterator implements \Iterator
 {
 	protected $_index;
 	protected $_inner_index;
+	protected $_iterators;
 
 	public function __construct($iterators)
 	{
@@ -189,6 +190,10 @@ class ChainIterator implements \Iterator
 	public function valid()
 	{
 		$iterator_count = count($this->_iterators);
+		if (!$iterator_count){
+			return false;
+		}
+
 		while ($this->_inner_index < $iterator_count - 1){
 			if ($this->_iterators[$this->_inner_index]->valid()){
 				return true;

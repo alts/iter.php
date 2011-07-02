@@ -3,7 +3,7 @@ namespace iter;
 require_once 'lib/iterators.php';
 require_once 'lib/exceptions.php';
 
-const VERSION = 0.60;
+const VERSION = 0.601;
 
 function count($start=0, $step=1)
 {
