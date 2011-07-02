@@ -174,6 +174,25 @@ function ifilterfalse($predicate, $iterable)
 	return _ifilter($predicate, $iterable, false);
 }
 
+function dropWhile(\Closure $predicate, $iterable)
+{
+	if (is_string($iterable)){
+		$iterable = new lib\StringIterator($iterable);
+	} else if (is_array($iterable)){
+		$iterable = new \ArrayIterator($iterable);
+	}
+
+	if (!($iterable instanceof \Iterator)){
+		throw new exceptions\ArgumentTypeException(
+			__FUNCTION__,
+			2,
+			'string or array or Iterator'
+		);
+	}
+
+	return new lib\DropWhileIterator($predicate, $iterable);
+}
+
 function _ifilter($predicate, $iterable, $check)
 {
 	if ($predicate === null){
