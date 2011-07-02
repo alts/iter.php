@@ -4,7 +4,7 @@ class RepeatTest extends PHPUnit_Framework_TestCase
 {
 	public function testRepeatNone()
 	{
-		foreach (iter\repeat(true, 0) as $key => $value){
+		foreach (iter\repeat(true, 0) as $index => $value){
 			$this->fail('Should not iterate over item repeated zero times');
 		}
 	}
@@ -15,8 +15,8 @@ class RepeatTest extends PHPUnit_Framework_TestCase
 		$iterations = 0;
 		$times = 5;
 
-		foreach (iter\repeat($object, $times) as $key => $value){
-			$this->assertEquals($iterations++, $key);
+		foreach (iter\repeat($object, $times) as $index => $value){
+			$this->assertEquals($iterations++, $index);
 			$this->assertEquals($object, $value);
 		}
 
@@ -29,8 +29,8 @@ class RepeatTest extends PHPUnit_Framework_TestCase
 		$iterations = 0;
 		$max_iterations = 7;
 
-		foreach (iter\repeat($object) as $key => $value){
-			$this->assertEquals($iterations++, $key);
+		foreach (iter\repeat($object) as $index => $value){
+			$this->assertEquals($iterations++, $index);
 			$this->assertEquals($object, $value);
 			if ($iterations === $max_iterations){
 				break;
@@ -46,8 +46,8 @@ class RepeatTest extends PHPUnit_Framework_TestCase
 		$iterations = 0;
 		$max_iterations = 7;
 
-		foreach (iter\repeat($object) as $key => $_){
-			$this->assertEquals($iterations++, $key);
+		foreach (iter\repeat($object) as $index => $_){
+			$this->assertEquals($iterations++, $index);
 			if ($iterations === $max_iterations){
 				break;
 			}
@@ -57,8 +57,8 @@ class RepeatTest extends PHPUnit_Framework_TestCase
 
 		$iterations = 0;
 
-		foreach (iter\repeat($object) as $key => $_){
-			$this->assertEquals($iterations++, $key);
+		foreach (iter\repeat($object) as $index => $_){
+			$this->assertEquals($iterations++, $index);
 			if ($iterations === $max_iterations){
 				break;
 			}

@@ -8,8 +8,8 @@ class CycleTest extends PHPUnit_Framework_TestCase
 		$iterations = 0;
 		$max_iterations = strlen($iterable) * 2 + 1;
 
-		foreach (iter\cycle($iterable) as $key => $value){
-			$this->assertEquals($iterations, $key);
+		foreach (iter\cycle($iterable) as $index => $value){
+			$this->assertEquals($iterations, $index);
 			$this->assertEquals($iterable[$iterations % strlen($iterable)], $value);
 			if (++$iterations == $max_iterations){
 				break;
@@ -27,8 +27,8 @@ class CycleTest extends PHPUnit_Framework_TestCase
 
 		$iterator = iter\cycle($iterable);
 
-		foreach ($iterator as $key => $value){
-			$this->assertEquals($iterations, $key);
+		foreach ($iterator as $index => $value){
+			$this->assertEquals($iterations, $index);
 			$this->assertEquals($iterable[$iterations % strlen($iterable)], $value);
 			if (++$iterations == $max_iterations){
 				break;
@@ -39,8 +39,8 @@ class CycleTest extends PHPUnit_Framework_TestCase
 
 		$iterations = 0;
 
-		foreach ($iterator as $key => $value){
-			$this->assertEquals($iterations, $key);
+		foreach ($iterator as $index => $value){
+			$this->assertEquals($iterations, $index);
 			$this->assertEquals($iterable[$iterations % strlen($iterable)], $value);
 			if (++$iterations == $max_iterations){
 				break;

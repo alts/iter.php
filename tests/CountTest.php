@@ -31,9 +31,9 @@ class CountTest extends PHPUnit_Framework_TestCase
 		$iterations = 0;
 		$max_iterations = 2;
 
-		foreach (iter\count() as $key => $value){
-			$this->assertEquals($iterations, $key);
-			$this->assertEquals($key, $value);
+		foreach (iter\count() as $index => $value){
+			$this->assertEquals($iterations, $index);
+			$this->assertEquals($index, $value);
 
 			if (++$iterations == $max_iterations){
 				break;
@@ -50,8 +50,8 @@ class CountTest extends PHPUnit_Framework_TestCase
 		$start = 7;
 		$step = 1;
 
-		foreach (iter\count($start) as $key => $value){
-			$this->assertEquals($iterations, $key);
+		foreach (iter\count($start) as $index => $value){
+			$this->assertEquals($iterations, $index);
 			$this->assertEquals($start + $step * $iterations, $value);
 
 			if (++$iterations == $max_iterations){
@@ -69,8 +69,8 @@ class CountTest extends PHPUnit_Framework_TestCase
 		$start = 7;
 		$step = 8;
 
-		foreach (iter\count($start, $step) as $key => $value){
-			$this->assertEquals($iterations, $key);
+		foreach (iter\count($start, $step) as $index => $value){
+			$this->assertEquals($iterations, $index);
 			$this->assertEquals($start + $step * $iterations, $value);
 
 			if (++$iterations == $max_iterations){
@@ -90,8 +90,8 @@ class CountTest extends PHPUnit_Framework_TestCase
 
 		$iterator = iter\count($start);
 
-		foreach ($iterator as $key => $value){
-			$this->assertEquals($iterations, $key);
+		foreach ($iterator as $index => $value){
+			$this->assertEquals($iterations, $index);
 			$this->assertEquals($start + $step * $iterations, $value);
 
 			if (++$iterations == $max_iterations){
@@ -102,8 +102,8 @@ class CountTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals($max_iterations, $iterations);
 
 		$iterations = 0;
-		foreach ($iterator as $key => $value){
-			$this->assertEquals($iterations, $key);
+		foreach ($iterator as $index => $value){
+			$this->assertEquals($iterations, $index);
 			$this->assertEquals($start + $step * $iterations, $value);
 
 			if (++$iterations == $max_iterations){

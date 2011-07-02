@@ -8,18 +8,18 @@ class CompressTest extends PHPUnit_Framework_TestCase
 		$iterations = 0;
 
 		// test iteration
-		foreach (iter\compress('ABCDEF', array(1,0,1,0,1,1)) as $index => $char){
+		foreach (iter\compress('ABCDEF', array(1,0,1,0,1,1)) as $index => $value){
 			$this->assertEquals($iterations++, $index);
-			$this->assertEquals($expected[$index], $char);
+			$this->assertEquals($expected[$index], $value);
 		}
 
 		$this->assertEquals(3, $index);
 
 		// test rewind
 		$iterations = 0;
-		foreach (iter\compress('ABCDEF', array(1,0,1,0,1,1)) as $index => $char){
+		foreach (iter\compress('ABCDEF', array(1,0,1,0,1,1)) as $index => $value){
 			$this->assertEquals($iterations++, $index);
-			$this->assertEquals($expected[$index], $char);
+			$this->assertEquals($expected[$index], $value);
 		}
 
 		$this->assertEquals(3, $index);
@@ -30,17 +30,17 @@ class CompressTest extends PHPUnit_Framework_TestCase
 		$expected = array('A','C','E');
 
 		$iterations = 0;
-		foreach (iter\compress('ABCDE', array(1,0,1,0,1,1)) as $index => $char){
+		foreach (iter\compress('ABCDE', array(1,0,1,0,1,1)) as $index => $value){
 			$this->assertEquals($iterations++, $index);
-			$this->assertEquals($expected[$index], $char);
+			$this->assertEquals($expected[$index], $value);
 		}
 
 		$this->assertEquals(2, $index);
 
 		$iterations = 0;
-		foreach (iter\compress('ABCDEF', array(1,0,1,0,1)) as $index => $char){
+		foreach (iter\compress('ABCDEF', array(1,0,1,0,1)) as $index => $value){
 			$this->assertEquals($iterations++, $index);
-			$this->assertEquals($expected[$index], $char);
+			$this->assertEquals($expected[$index], $value);
 		}
 
 		$this->assertEquals(2, $index);
