@@ -27,7 +27,7 @@ h2. Feature Checklist
 * -imap-
 * -starmap-
 * tee
-* takewhile
+* -takewhile-
 * -izip-
 * izip_longest
 * product

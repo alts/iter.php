@@ -438,4 +438,46 @@ class DropWhileIterator implements \Iterator
 		return $this->_iterable->valid();
 	}
 }
+
+class TakeWhileIterator implements \Iterator
+{
+	protected $_index;
+	protected $_predicate;
+	protected $_iterable;
+
+	public function __construct($predicate, $iterable)
+	{
+		$this->_predicate = $predicate;
+		$this->_iterable = $iterable;
+		$this->rewind();
+	}
+
+	public function rewind()
+	{
+		$this->_index = 0;
+		$this->_iterable->rewind();
+	}
+
+	public function key()
+	{
+		return $this->_index;
+	}
+
+	public function current()
+	{
+		return $this->_iterable->current();
+	}
+
+	public function next()
+	{
+		$this->_index++;
+		return $this->_iterable->next();
+	}
+
+	public function valid()
+	{
+		$predicate = $this->_predicate;
+		return $this->_iterable->valid() && $predicate($this->_iterable->current());
+	}
+}
 ?>
