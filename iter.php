@@ -3,7 +3,7 @@ namespace iter;
 require_once 'lib/iterators.php';
 require_once 'lib/exceptions.php';
 
-const VERSION = 0.65;
+const VERSION = 0.70;
 
 function count($start=0, $step=1)
 {
@@ -96,6 +96,37 @@ function izip()
 	}
 
 	return new lib\ZipIterator($iterators);
+}
+
+/**
+ * This function differs from its python counterpart in argument order.
+ * Fill value is first, and required, followed by iterables to be zipped
+ */
+function izip_longest($fillvalue='-')
+{
+	$iterators = array();
+	$args = func_get_args();
+	if ($args){
+		foreach (islice($args, 1, null) as $index => $arg){
+			if (is_string($arg)){
+				$arg = new lib\StringIterator($arg);
+			} else if (is_array($arg)){
+				$arg = new \ArrayIterator($arg);
+			}
+
+			if (!($arg instanceof \Iterator)){
+				throw new exceptions\ArgumentTypeException(
+					__FUNCTION__,
+					$index,
+					'string or array or Iterator'
+				);
+			}
+
+			$iterators[] = $arg;
+		}
+	}
+
+	return new lib\ZipLongestIterator($iterators, $fillvalue);
 }
 
 function islice($iterable, $_)

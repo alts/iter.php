@@ -29,7 +29,7 @@ h2. Feature Checklist
 * tee
 * -takewhile-
 * -izip-
-* izip_longest
+* -izip_longest-
 * product
 * permutations
 * combinations

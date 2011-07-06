@@ -280,6 +280,64 @@ class ZipIterator extends \MultipleIterator
 	}
 }
 
+class ZipLongestIterator implements \Iterator
+{
+	protected $_index;
+	protected $_fillvalue;
+	protected $_iterators;
+
+	public function __construct($iterators, $fillvalue)
+	{
+		$this->_fillvalue = $fillvalue;
+		$this->_iterators = $iterators;
+		$this->rewind();
+	}
+
+	public function rewind()
+	{
+		$this->_index = 0;
+		foreach ($this->_iterators as $iterator){
+			$iterator->rewind();
+		}
+	}
+
+	public function key()
+	{
+		return $this->_index;
+	}
+
+	public function current()
+	{
+		$result = array();
+		foreach ($this->_iterators as $iterator){
+			if ($iterator->valid()){
+				$result[] = $iterator->current();
+			} else {
+				$result[] = $this->_fillvalue;
+			}
+		}
+		return $result;
+	}
+
+	public function next()
+	{
+		$this->_index++;
+		foreach ($this->_iterators as $iterator){
+			$iterator->next();
+		}
+	}
+
+	public function valid()
+	{
+		foreach ($this->_iterators as $iterator){
+			if ($iterator->valid()){
+				return true;
+			}
+		}
+		return false;
+	}
+}
+
 class SliceIterator extends \LimitIterator
 {
 	protected $_step;
